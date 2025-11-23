@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class PaymentSettler:
     def __init__(self, facilitator_keypair: Keypair):
         self.facilitator_keypair = facilitator_keypair
-        self.facilitator_pubkey = facilitator_keypair.pubkey()
+        self.facilitator_pubkey = facilitator_keypair.pubkey
         self.total_fees_paid = 0
         self.transactions_processed = 0
 
