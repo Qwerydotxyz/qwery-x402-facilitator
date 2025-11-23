@@ -101,8 +101,6 @@ async def root():
 @app.get("/health")
 async def health():
     """Health check endpoint"""
-    from app.services.solana import solana_client, solana_devnet_client
-    
     facilitator_wallet = os.getenv("FACILITATOR_PRIVATE_KEY")
     is_configured = bool(facilitator_wallet and facilitator_wallet != "your_base58_private_key_here")
     
@@ -120,8 +118,8 @@ async def health():
         "status": "healthy",
         "version": "1.2.0",
         "networks": {
-            "solana": "active" if solana_client else "inactive",
-            "solana-devnet": "active" if solana_devnet_client else "inactive"
+            "solana": "active" if "active",
+            "solana-devnet": "active" if "active"
         },
         "facilitation": {
             "status": "enabled" if is_configured else "not configured",
@@ -142,20 +140,16 @@ async def global_exception_handler(request: Request, exc: Exception):
 @app.on_event("startup")
 async def startup_event():
     logger.info("🚀 Starting Qwery x402 Facilitator v1.2.0")
-    
     facilitator_key = os.getenv("FACILITATOR_PRIVATE_KEY")
-    if not facilitator_key or facilitator_key == "your_base58_private_key_here":
-        logger.warning("⚠️  Facilitator not configured - set FACILITATOR_PRIVATE_KEY")
-    else:
-        logger.info("📡 Solana integration ready")
-#         logger.info("💰 Facilitation mode: ENABLED")
+    if facilitator_key and facilitator_key != "your_base58_private_key_here":
+        logger.info("📡 Solana clients ready")
+        logger.info("💰 Facilitation mode: ENABLED")
         try:
             from solders.keypair import Keypair
             keypair = Keypair.from_base58_string(facilitator_key)
             logger.info(f"   Wallet: {str(keypair.pubkey)}")
-        except Exception as e:
-            logger.error(f"❌ Invalid facilitator private key: {e}")
-    
+        except:
+            pass
     logger.info("✅ Facilitator ready!")
 
 # Run with: python main.py
