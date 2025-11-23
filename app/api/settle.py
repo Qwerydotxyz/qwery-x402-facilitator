@@ -3,16 +3,18 @@ Settle Payment API Endpoint - Qwery Facilitator
 """
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from typing import Optional
 import logging
 
 from app.services.payment_settler import PaymentSettler
-from app.services.payment_settler import PaymentSettler
+from app.services.wallet import get_facilitator_wallet
+from app.models.x402 import SettlePaymentRequest, SettlePaymentResponse
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
-payment_settler = PaymentSettler()
+
+# Initialize payment settler with facilitator wallet
+facilitator_wallet = get_facilitator_wallet()
+payment_settler = PaymentSettler(facilitator_wallet)
 
 @router.post("/settle", response_model=SettlePaymentResponse)
 async def settle_payment(request: SettlePaymentRequest):
