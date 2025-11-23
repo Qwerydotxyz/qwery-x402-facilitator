@@ -119,7 +119,7 @@ async def health():
         "version": "1.2.0",
         "networks": {
             "solana": "active",
-            "solana-devnet": "active" if "active"
+            "solana-devnet": "active"
         },
         "facilitation": {
             "status": "enabled" if is_configured else "not configured",
