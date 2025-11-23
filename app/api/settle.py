@@ -8,7 +8,8 @@ import logging
 
 from app.models.x402 import SettleRequest, SettleResponse
 from app.services.verifier import payment_verifier
-from app.services.settler import payment_settler
+from app.services.payment_settler import PaymentSettler
+payment_settler = PaymentSettler()
 
 logger = logging.getLogger(__name__)
 
