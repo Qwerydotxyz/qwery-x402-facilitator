@@ -8,7 +8,7 @@ from typing import Optional
 import logging
 
 from app.services.payment_settler import PaymentSettler
-from app.models.x402 import SettlePaymentRequest, SettlePaymentResponse
+from app.services.payment_settler import PaymentSettler
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
