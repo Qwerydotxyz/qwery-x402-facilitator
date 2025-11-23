@@ -148,7 +148,7 @@ async def startup_event():
         logger.warning("⚠️  Facilitator not configured - set FACILITATOR_PRIVATE_KEY")
     else:
         logger.info("📡 Solana integration ready")
-        logger.info("💰 Facilitation mode: ENABLED")
+#         logger.info("💰 Facilitation mode: ENABLED")
         try:
             from solders.keypair import Keypair
             keypair = Keypair.from_base58_string(facilitator_key)
