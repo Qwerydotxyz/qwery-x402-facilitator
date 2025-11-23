@@ -118,7 +118,7 @@ async def health():
         "status": "healthy",
         "version": "1.2.0",
         "networks": {
-            "solana": "active" if "active",
+            "solana": "active",
             "solana-devnet": "active" if "active"
         },
         "facilitation": {
