@@ -143,20 +143,16 @@ async def global_exception_handler(request: Request, exc: Exception):
 async def startup_event():
     logger.info("🚀 Starting Qwery x402 Facilitator v1.2.0")
     
-    # Check configuration
     facilitator_key = os.getenv("FACILITATOR_PRIVATE_KEY")
     if not facilitator_key or facilitator_key == "your_base58_private_key_here":
         logger.warning("⚠️  Facilitator not configured - set FACILITATOR_PRIVATE_KEY")
     else:
-        from app.services.solana import solana_client, solana_devnet_client
-        logger.info("📡 Solana clients initialized: solana, solana-devnet")
-        
-        # Get facilitator wallet address
+        logger.info("📡 Solana integration ready")
+        logger.info("💰 Facilitation mode: ENABLED")
         try:
             from solders.keypair import Keypair
             keypair = Keypair.from_base58_string(facilitator_key)
-            logger.info(f"💰 Facilitation mode: ENABLED")
-            logger.info(f"   Wallet: {str(keypair.pubkey())}")
+            logger.info(f"   Wallet: {str(keypair.pubkey)}")
         except Exception as e:
             logger.error(f"❌ Invalid facilitator private key: {e}")
     
