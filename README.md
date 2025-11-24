@@ -1,185 +1,123 @@
+<div align="center">
+  <img src="https://res.cloudinary.com/dkfwg4ta8/image/upload/v1763975857/faci_un8qfi.png" alt="Qwery x402 Facilitator" width="100%" />
+</div>
+
 # Qwery x402 Facilitator
 
-> Production-ready payment facilitator for Solana using the x402 protocol
+Production-ready payment facilitator for Solana implementing the x402 HTTP payment protocol.
 
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
+[![Python](https://img.shields.io/badge/python-3.11-blue)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688)](https://fastapi.tiangolo.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🚀 Features
+<p align="center">
+  <a href="https://qwery.xyz">Website</a> •
+  <a href="https://docs.qwery.xyz">Docs</a> •
+  <a href="https://twitter.com/qaboratory">Twitter</a> •
+  <a href="https://discord.gg/qwery">Discord</a>
+</p>
 
-- **Multi-Token Support** - Accept SOL, USDC, USDT, and any SPL token
-- **Zero User Fees** - Facilitator pays all network fees (~$0.0001)
-- **Instant Settlement** - Sub-second transaction confirmation
-- **x402 Compatible** - Standard protocol for HTTP payments
-- **Token Gateway** - Token-gating and membership tiers
-- **Production Ready** - Live on Solana mainnet
+---
 
-## 📦 Quick Start
+## What is x402?
+
+The x402 protocol enables HTTP-native payments where API servers can request payment via HTTP 402 status codes. The **facilitator** acts as the trusted intermediary that:
+
+- **Holds escrowed funds** for payments
+- **Signs transactions** on behalf of users
+- **Pays network fees** so users don't have to
+- **Abstracts blockchain complexity** from both clients and servers
+
+## Features
+
+- **Zero User Fees** - Facilitator covers all Solana network costs
+- **Instant Settlement** - Sub-2 second transaction finality
+- **Multi-Token Support** - SOL, USDC, USDT on Solana
+- **Production Ready** - Built with FastAPI for high performance
+- **Devnet & Mainnet** - Full support for both networks
+
+## Quick Start
 
 ### Prerequisites
 
 - Python 3.11+
-- Solana wallet with SOL for network fees
-- Basic knowledge of Solana transactions
+- MongoDB
+- Solana CLI (optional)
 
 ### Installation
 ```bash
-# Clone repository
 git clone https://github.com/Qwerydotxyz/qwery-x402-facilitator.git
 cd qwery-x402-facilitator
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-nano .env  # Add your FACILITATOR_PRIVATE_KEY
 ```
 
 ### Configuration
 
-Create a `.env` file with:
+Create a `.env` file:
 ```env
+MONGODB_URL=mongodb://localhost:27017
+DATABASE_NAME=qwery_facilitator
+SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
 FACILITATOR_PRIVATE_KEY=your_base58_private_key
-FACILITATOR_SERVICE_FEE=0.00
-FACILITATOR_MIN_BALANCE=100000
-LOG_LEVEL=INFO
-CORS_ORIGINS=*
+JWT_SECRET=your_jwt_secret
 ```
 
-### Run Locally
+### Running the Service
 ```bash
-# Development
-python main.py
-
-# Production
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-API will be available at: `http://localhost:8000`
+## API Overview
 
-Interactive docs: `http://localhost:8000/docs`
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check |
+| `/payments/create` | POST | Create payment request |
+| `/payments/settle` | POST | Settle payment with signed tx |
+| `/payments/verify` | POST | Verify payment by signature |
+| `/payments/{id}` | GET | Get payment details |
 
-## 🌐 Production Deployment
-
-Live API: **https://facilitator.qwery.xyz**
-
-Documentation: **https://facilitator.qwery.xyz/docs**
-
-## 📚 API Reference
-
-### Create Payment
-```bash
-POST /create-payment
-
-{
-  "payer": "wallet_address",
-  "amount": 100000,
-  "token": "SOL",
-  "network": "solana"
-}
+## Architecture
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Client    │────▶│ Facilitator │────▶│   Solana    │
+│   (SDK)     │◀────│   (x402)    │◀────│  Blockchain │
+└─────────────┘     └─────────────┘     └─────────────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │   MongoDB   │
+                    │  (Storage)  │
+                    └─────────────┘
 ```
 
-### Settle Payment
-```bash
-POST /settle
+## SDKs
 
-{
-  "signed_transaction": "base64_encoded...",
-  "network": "solana"
-}
-```
+| Language | Package | Install |
+|----------|---------|---------|
+| **Rust** | [qwery-sdk](https://crates.io/crates/qwery-sdk) | `cargo add qwery-sdk` |
+| **Python** | [qwery-sdk](https://pypi.org/project/qwery-sdk/) | `pip install qwery-sdk` |
+| **TypeScript** | Coming Soon | - |
 
-### Check Wallet Status
-```bash
-GET /wallet-status?network=solana
-```
+## Security
 
-### Token Gateway
-```bash
-POST /token-gate/check-access
+- All transactions require user signatures
+- Facilitator only signs fee-paying portions
+- Private keys never leave the facilitator server
+- Rate limiting and authentication on all endpoints
 
-{
-  "wallet_address": "...",
-  "required_token": "EPjFWdd...",
-  "required_amount": 1000000
-}
-```
+## Contributing
 
-## 🏗️ Architecture
-```
-├── app/
-│   ├── api/          # API endpoints
-│   ├── models/       # Data models
-│   ├── services/     # Business logic
-│   └── utils/        # Utilities
-├── main.py           # Application entry
-└── requirements.txt  # Dependencies
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## 🔐 Security
+## Links
 
-- **Private Key Management** - Stored in environment variables only
-- **Partial Signing** - Users always control their funds
-- **Rate Limiting** - 100 requests/minute per IP
-- **HTTPS Only** - All communications encrypted
+- 🌐 **Website**: [qwery.xyz](https://qwery.xyz)
+- 📖 **Documentation**: [docs.qwery.xyz](https://docs.qwery.xyz)
+- 🐦 **Twitter**: [@qaboratory](https://twitter.com/qaboratory)
+- 💬 **Discord**: [Join Community](https://discord.gg/qwery)
+- 📦 **GitHub**: [Qwerydotxyz](https://github.com/Qwerydotxyz)
 
-## 🧪 Testing
-```bash
-# Test health endpoint
-curl http://localhost:8000/health
+## License
 
-# Test wallet status
-curl http://localhost:8000/wallet-status?network=solana
-
-# Run full test suite
-pytest tests/
-```
-
-## 📖 Documentation
-
-- **Full Documentation**: [docs/](./docs/)
-- **API Reference**: https://facilitator.qwery.xyz/docs
-- **Whitepaper**: [Qwery_x402_Whitepaper.txt](./docs/whitepaper.txt)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Links
-
-- **Website**: https://qwery.xyz
-- **API**: https://facilitator.qwery.xyz
-- **GitHub**: https://github.com/Qwerydotxyz
-- **Documentation**: https://facilitator.qwery.xyz/docs
-
-## 💬 Support
-
-- **Discord**: [discord.gg/qwery](https://discord.gg/qwery)
-- **Email**: support@qwery.xyz
-- **Twitter**: [@QweryNetwork](https://twitter.com/QweryNetwork)
-
-## 🙏 Acknowledgments
-
-- Built on [Solana](https://solana.com)
-- Compatible with [x402 Protocol](https://x402.org)
-- Inspired by the need for frictionless web3 payments
-
----
-
-**Built with ❤️ for the Solana ecosystem**
+MIT © Qwery
