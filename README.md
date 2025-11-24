@@ -81,12 +81,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 │   Client    │────▶│ Facilitator │────▶│   Solana    │
 │   (SDK)     │◀────│   (x402)    │◀────│  Blockchain │
 └─────────────┘     └─────────────┘     └─────────────┘
-                           │
-                           ▼
-                    ┌─────────────┐
-                    │   MongoDB   │
-                    │  (Storage)  │
-                    └─────────────┘
+
 ```
 
 ## SDKs
@@ -95,7 +90,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 |----------|---------|---------|
 | **Rust** | [qwery-sdk](https://crates.io/crates/qwery-sdk) | `cargo add qwery-sdk` |
 | **Python** | [qwery-sdk](https://pypi.org/project/qwery-sdk/) | `pip install qwery-sdk` |
-| **TypeScript** | Coming Soon | - |
+| **TypeScript** | [qwery-sdk](https://github.com/Qwerydotxyz/qwery-sdk)) | `npm install @qwerydotxyz/qwery-sdk` |
 
 ## Security
 
