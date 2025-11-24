@@ -1,21 +1,19 @@
 <div align="center">
   <img src="https://res.cloudinary.com/dkfwg4ta8/image/upload/v1763975857/faci_un8qfi.png" alt="Qwery x402 Facilitator" width="100%" />
+
+  <h1>Qwery x402 Facilitator</h1>
+  <p>Production-ready payment facilitator for Solana implementing the x402 HTTP payment protocol.</p>
+
+  [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+  [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+  [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
+  [![Solana](https://img.shields.io/badge/Solana-Mainnet-9945FF?style=for-the-badge&logo=solana&logoColor=white)](https://solana.com)
+
+  <br />
+
+  [Website](https://qwery.xyz) • [Docs](https://docs.qwery.xyz) • [Twitter](https://twitter.com/qaboratory) • [Discord](https://discord.gg/qwery)
+
 </div>
-
-# Qwery x402 Facilitator
-
-Production-ready payment facilitator for Solana implementing the x402 HTTP payment protocol.
-
-[![Python](https://img.shields.io/badge/python-3.11-blue)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688)](https://fastapi.tiangolo.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-<p align="center">
-  <a href="https://qwery.xyz">Website</a> •
-  <a href="https://docs.qwery.xyz">Docs</a> •
-  <a href="https://twitter.com/qaboratory">Twitter</a> •
-  <a href="https://discord.gg/qwery">Discord</a>
-</p>
 
 ---
 
@@ -109,14 +107,6 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-## Links
-
-- 🌐 **Website**: [qwery.xyz](https://qwery.xyz)
-- 📖 **Documentation**: [docs.qwery.xyz](https://docs.qwery.xyz)
-- 🐦 **Twitter**: [@qaboratory](https://twitter.com/qaboratory)
-- 💬 **Discord**: [Join Community](https://discord.gg/qwery)
-- 📦 **GitHub**: [Qwerydotxyz](https://github.com/Qwerydotxyz)
 
 ## License
 
