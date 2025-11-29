@@ -77,9 +77,7 @@ def build_402_response(resource_url: str, facilitator_wallet: str) -> dict:
                 "maxTimeoutSeconds": 60,
                 "asset": SOL_MINT
             }
-        ],
-        "error": "",
-        "payer": ""
+        ]
     }
 
 
