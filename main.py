@@ -18,7 +18,8 @@ from app.api import (
     wallet_status,
     supported,
     discovery,
-    token_gateway
+    token_gateway,
+    x402_endpoint  # ADD THIS
 )
 
 # Load environment variables
@@ -50,7 +51,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+# Include routers - x402 endpoint FIRST for /create route priority
+app.include_router(x402_endpoint.router, tags=["x402 Protocol"])
 app.include_router(create_payment.router, tags=["Payments"])
 app.include_router(settle.router, tags=["Payments"])
 app.include_router(verify.router, tags=["Payments"])
@@ -74,12 +76,14 @@ async def root():
             "Multi-token support (SOL, USDC, USDT)",
             "Zero user fees (facilitator pays)",
             "Token-gated access & membership tiers",
-            "Partial transaction signing"
+            "Partial transaction signing",
+            "x402 Protocol compliant"
         ],
         "modes": {
             "facilitation": "enabled" if is_configured else "not installed"
         },
         "endpoints": {
+            "x402": ["/create", "/x402"],
             "core": ["/supported", "/discovery", "/health"],
             "facilitation": [
                 "/create-payment",
@@ -117,6 +121,7 @@ async def health():
     return {
         "status": "healthy",
         "version": "1.2.0",
+        "x402_compliant": True,
         "networks": {
             "solana": "active",
             "solana-devnet": "active"
@@ -144,6 +149,7 @@ async def startup_event():
     if facilitator_key and facilitator_key != "your_base58_private_key_here":
         logger.info("📡 Solana clients ready")
         logger.info("💰 Facilitation mode: ENABLED")
+        logger.info("🔐 x402 Protocol: ENABLED")
         try:
             from solders.keypair import Keypair
             keypair = Keypair.from_base58_string(facilitator_key)
