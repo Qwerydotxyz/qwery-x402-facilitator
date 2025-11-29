@@ -78,8 +78,8 @@ def build_402_response(resource_url: str, facilitator_wallet: str) -> dict:
                 "asset": SOL_MINT
             }
         ],
-        "error": None,
-        "payer": None
+        "error": "",
+        "payer": ""
     }
 
 
